@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+var Schema = mongoose.Schema;
 //create project model
 
 const projectSchema = mongoose.Schema({
@@ -12,13 +12,13 @@ const projectSchema = mongoose.Schema({
     required: true
   },
   projectOwner:{
-    type: String,
-    required: true
-  },
-  team:{
-    type: [String], //mails of dev team who's going to participate into the project
-    required: true // send notification to every participate // or mail
-  },
+      type:Schema.Types.ObjectId,
+      ref:'user'
+    },
+  team:[{
+    type:Schema.Types.ObjectId,
+    ref:'user'
+  }],
   started:{
     type: Boolean,
     default: false, 
@@ -30,7 +30,6 @@ const projectSchema = mongoose.Schema({
   tasks:{
     type:[
       {
-        id:Number,
         task:String,
         completed:Boolean,
         periority:String,

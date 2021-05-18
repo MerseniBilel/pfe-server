@@ -4,7 +4,7 @@
   "description": "stage pfe",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js"
+    "server": "nodemon index.js --ignore './pfe-client/'"
   },
   "author": "Merseni Bilel Kaabech Abderahim",
   "license": "ISC",

@@ -69,7 +69,7 @@ route.post('/',[
         jwt.sign(
             payload,
             KEY,
-            {expiresIn:36000},
+            {expiresIn:"10h"},
             (err, token)=>{
                 if(err) throw err;
                 res.send({token});

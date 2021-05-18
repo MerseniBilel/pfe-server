@@ -17,13 +17,22 @@ KEY = process.env.KEY || 'pfepfe';
 //@access          Private;
 route.get('/', auth, async (req,res) =>{
 
+    /*
+    project name
+    project status
+    project Owner email
+    project owner name lastname
+    project date
+    */ 
+
     try {
         console.log("we got a request")
         const userNumber = await User.count();
         const projectNumber = await Project.count();
         const pendingProjects = await Project.count({started : false})
-        const allProjects = await Project.find()
-
+        const allProjects = await Project.find().populate('projectOwner',['name','lastname','avatar','email'])
+        console.log(allProjects)
+    
         const response = {
             usersNumber : userNumber,
             projectsNumber:projectNumber,
@@ -31,7 +40,7 @@ route.get('/', auth, async (req,res) =>{
             allProjects : allProjects
         }
         return res.send(response);
-
+        
     } catch (error) {
         return res.status(500).send("server error");
     }
