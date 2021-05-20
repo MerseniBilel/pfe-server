@@ -17,7 +17,6 @@ router.post('/',[
   check('projectName','Project Name is required').not().isEmpty(),
   check('projectDesc','project description is required').not().isEmpty(),
   check('team','Team is required as an array').isArray(),
-  check('tasks','Team is required as an array').isArray(),
 ], async (req,res) =>{
   const errors = validationResult(req);
   if(!errors.isEmpty()){
