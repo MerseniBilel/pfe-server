@@ -1,0 +1,9 @@
+admin can add a project
+
+all [
+	CRA => [
+		cal
+		status of the month / bool true false 	
+	]
+]
+https://github.com/vafonkin/react-calendar.git

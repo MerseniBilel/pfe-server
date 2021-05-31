@@ -31,9 +31,16 @@ const projectSchema = mongoose.Schema({
     type:[
       {
         task:String,
+        description:String,
         completed:Boolean,
         periority:String,
-        completedDate:Date
+        startedDate:Date,
+        completedDate:Date,
+        deadline:Date,
+        teamMember : {
+          type:Schema.Types.ObjectId,
+          ref:'user'
+        }
       }
     ]
   }

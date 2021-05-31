@@ -34,6 +34,7 @@ app.use('/api/user', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projs', require('./routes/projects'));
 app.use('/api/fetchadmin', require('./routes/fetchAdminDashboardData'));
+app.use('/api/task', require('./routes/tasks'));
 
 
 

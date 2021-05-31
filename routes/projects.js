@@ -134,6 +134,29 @@ router.get('/',auth, async (req,res)=>{
 
 
 
+// @route GET   api/project/{id}
+// @desc        get a project by id
+// @access      private
+router.get('/:id',auth, async (req,res) => {
+  try{
+    /*
+      projectDescription {
+        projectname,
+        project description,
+        project owner,
+        project team,
+        project tasks
+        
+      }
+    */
 
+    response =  await Project.findById(req.params.id);
+    res.send(response);
+  }catch(error){
+
+    return res.status(500).send('server error'); 
+  }
+  
+})
 
 module.exports = router;
