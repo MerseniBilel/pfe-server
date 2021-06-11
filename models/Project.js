@@ -10,7 +10,11 @@ const projectSchema = mongoose.Schema({
   projectDesc: {
     type: String,
     required: true
-  },
+  },  
+  projectFile: {
+    type: String,
+    required: true
+  },  
   projectOwner:{
       type:Schema.Types.ObjectId,
       ref:'user'
@@ -32,9 +36,15 @@ const projectSchema = mongoose.Schema({
       {
         task:String,
         description:String,
-        completed:Boolean,
+        completed:{
+          type:Boolean,
+          default:false
+        },
         periority:String,
-        startedDate:Date,
+        startedDate : {
+          type:Date,
+          default:Date.now
+        },
         completedDate:Date,
         deadline:Date,
         teamMember : {

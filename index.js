@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const fileupload = require("express-fileupload");
 dotenv.config();
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -22,6 +23,8 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+app.use(fileupload());
+app.use(express.static("files"));
 
 //Connect to db
 mongoose.connect(process.env.DB_PATH, {useNewUrlParser: true, useUnifiedTopology:true,useCreateIndex:true },)
@@ -33,8 +36,10 @@ mongoose.connect(process.env.DB_PATH, {useNewUrlParser: true, useUnifiedTopology
 app.use('/api/user', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projs', require('./routes/projects'));
+app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/fetchadmin', require('./routes/fetchAdminDashboardData'));
-app.use('/api/task', require('./routes/tasks'));
+app.use('/api/v2/mobile', require('./routes/mobileapp'));
+
 
 
 

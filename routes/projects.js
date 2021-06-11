@@ -13,17 +13,11 @@ dotenv.config();
 // @route post   api/projects
 // @desc        insert into project collection
 // @access      private
-router.post('/',[
-  check('projectName','Project Name is required').not().isEmpty(),
-  check('projectDesc','project description is required').not().isEmpty(),
-  check('team','Team is required as an array').isArray(),
-], async (req,res) =>{
-  const errors = validationResult(req);
-  if(!errors.isEmpty()){
-    return res.status(400).send({ errors : errors.array()});
-  }
+router.post('/', async (req,res) =>{
   
-  const { projectName, projectDesc, projectOwner, team, tasks, started} = req.body
+  console.log(req.body);
+  console.log(req.files);
+  const {projectName, projectDesc, projectOwner, selectedValue, tasks, started } = req.body
 
   
   // create a new project object
@@ -34,17 +28,31 @@ router.post('/',[
     started
   });
 
+  const team = selectedValue.split(",");
 
   const ProjectOwnerInformations = await User.findById(projectOwner)
   project.projectOwner = ProjectOwnerInformations
 
   const teamMembers = await Promise.all(team.map( async (t)=>{
-    return await User.findById(t._id)
-  }))
+    return await User.findById(t);
+  }));
 
   project.team = teamMembers
-
+ 
+ 
   
+  const file = req.files.file;
+  const filepath = `http://localhost:3000/uploads/${file.name}`;
+  file.mv(`${__dirname}/../pfe-client/public/uploads/${file.name}`, err => {
+      if (err) {
+          console.log(err);
+          return res.status(500).send(err);
+      }
+  });
+
+  project.projectFile = filepath;
+
+  console.log(project);
 
 /* by id mat7otech { } */
 
@@ -150,11 +158,25 @@ router.get('/:id',auth, async (req,res) => {
       }
     */
 
-    response =  await Project.findById(req.params.id);
+    response =  await Project.findById(req.params.id).populate(['projectOwner','team']);
     res.send(response);
   }catch(error){
 
     return res.status(500).send('server error'); 
+  }
+  
+})
+
+// @route DELETE   api/project/{id}
+// @desc        delete the project 
+// @access      private
+router.delete('/:id',auth, async (req,res) => {
+  console.log(req.params.id);
+  try{
+    const response =  await Project.findOneAndDelete({_id : req.params.id});
+    res.send(response);
+  }catch(error){
+    console.log(error);
   }
   
 })

@@ -2,8 +2,8 @@
 // get the total projects number
 //get the project that the status are pending (mezelou mabdawech)
 //list all the projects
-
-
+const PDFGenerator = require('pdfkit')
+const fs = require('fs')
 const route = require('express').Router();
 const User =  require('../models/User');
 const Project = require('../models/Project');
@@ -48,5 +48,36 @@ route.get('/', auth, async (req,res) =>{
 
 });
 
+// post request 
+// body should be 
+/*
+    {
+        action : generate
+        cdr : all events 
+    }
+*/
+route.post('/', auth, async (req,res) =>{
+    
+    // instantiate the library
+    let theOutput = new PDFGenerator 
+    
+    // pipe to a writable stream which would save the result into the same directory
+    theOutput.pipe(fs.createWriteStream('./pfe-client/public/uploads/test.pdf'))
+    
+    // add in a local image and set it to be 250px by 250px
+    theOutput.image('./pfe-client/public/uploads/csi.png', { fit: [60,60] })
+    
+    theOutput.text('List of events happend in the last 30 day', { 
+        bold: true,
+        underline: true,
+        align: 'center',
+    })
+    
+    // write out file
+    theOutput.end()
+    res.send('end');
+});
+
 
 module.exports = route
+

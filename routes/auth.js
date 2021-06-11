@@ -33,11 +33,16 @@ route.post('/',[
     check('email','Please enter a valid email').isEmail(),
     check('password','Password is required').exists(),
 ],async (req,res)=> {
+    console.log(req.body);
     const errors = validationResult(req);
+    
+
     if(!errors.isEmpty()){
         return res.status(400).send({ errors : errors.array()});
     }
     const {email, password} = req.body; 
+
+    
     try{
         let user = await User.findOne({email});
         if(!user){
@@ -106,6 +111,57 @@ route.post('/logout' ,async (req,res)=> {
     }
 
 });
+
+route.put('/', async (req,res) => {
+
+    if(req.files != null){
+        console.log(req.body);
+        const file = req.files.file;
+        file.mv(`${__dirname}/../pfe-client/public/uploads/${file.name}`, err => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+            }
+        });
+
+        try{
+            // hash the password
+            const salt = await bcrypt.genSalt(10);
+            const newPassword = await bcrypt.hash(req.body.password,salt);
+            
+            const update = {
+                email:req.body.email,
+                name : req.body.name,
+                lastname : req.body.lastname,
+                password : newPassword,
+                phone_number : req.body.phone_number,
+                avatar : `http://localhost:3000/uploads/${file.name}`
+            };
+
+            const updatestatus = await User.findOneAndUpdate({_id:req.body.id},update, {new: true});
+            console.log(updatestatus);
+        }catch(err){
+            console.log(err)
+        }
+
+        
+        res.send('file was uploaded sucessfulyy');
+    }
+
+
+   /* try{
+        updatestatus = await User.findOneAndUpdate(
+            {email:user.email},
+            {active : false},
+            {new : true}
+        );
+    }catch(err){
+        console.log(err)
+    }*/
+    
+
+});
+
 
 module.exports = route
 
