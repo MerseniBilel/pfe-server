@@ -1,0 +1,46 @@
+const router = require('express').Router();
+const Project = require('../models/Project');
+const Event = require('../models/Event');
+const auth = require('../middleware/auth');
+
+//get all event
+router.get('/',auth, async (req,res) =>{
+    try {
+        const response = await Event.find().populate('theuser');
+        res.send(response);
+    }catch(error){
+        console.log(error)
+    }
+      
+});
+
+// post an event
+router.post('/',auth, async (req,res) =>{
+
+    const {taskdescription , theuser} = req.body
+    
+    myevent = new Event({
+        taskdescription,
+        theuser
+    })
+
+    try {
+        await myevent.save();
+        res.send(myevent);        
+    }catch(error){
+        console.log(error);
+    }
+});
+
+//update finished task
+router.post('/update',auth, async (req,res) =>{
+    try {
+        const response = await Event.findOneAndUpdate({ taskdescription : req.body.taskdescription },{ finishdate: req.body.finishdate }, {new : true});
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+      
+});
+
+module.exports = router;

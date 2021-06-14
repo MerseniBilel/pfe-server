@@ -39,6 +39,7 @@ app.use('/api/projs', require('./routes/projects'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/fetchadmin', require('./routes/fetchAdminDashboardData'));
 app.use('/api/v2/mobile', require('./routes/mobileapp'));
+app.use('/api/event', require('./routes/events'));
 
 
 

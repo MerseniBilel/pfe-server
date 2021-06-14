@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator');
 const Project = require('../models/Project');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
-
+const axios = require('axios');
 
 //for decoding the token 
 const jwt = require('jsonwebtoken');
@@ -159,6 +159,7 @@ router.get('/:id',auth, async (req,res) => {
     */
 
     response =  await Project.findById(req.params.id).populate(['projectOwner','team']);
+
     res.send(response);
   }catch(error){
 
