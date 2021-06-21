@@ -67,7 +67,6 @@ router.get('/:id',auth, async (req,res) =>{
 router.post('/',auth, async (req,res) =>{
 
     const {task,description,periority,deadline, projectId, projectOwner} = req.body;
-    console.log(req.body)
     const tasks = {
         task,
         description,

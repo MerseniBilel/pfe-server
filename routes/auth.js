@@ -115,7 +115,6 @@ route.post('/logout' ,async (req,res)=> {
 route.put('/', async (req,res) => {
 
     if(req.files != null){
-        console.log(req.body);
         const file = req.files.file;
         file.mv(`${__dirname}/../pfe-client/public/uploads/${file.name}`, err => {
             if (err) {
@@ -139,7 +138,6 @@ route.put('/', async (req,res) => {
             };
 
             const updatestatus = await User.findOneAndUpdate({_id:req.body.id},update, {new: true});
-            console.log(updatestatus);
         }catch(err){
             console.log(err)
         }

@@ -15,8 +15,6 @@ dotenv.config();
 // @access      private
 router.post('/', async (req,res) =>{
   
-  console.log(req.body);
-  console.log(req.files);
   const {projectName, projectDesc, projectOwner, selectedValue, tasks, started } = req.body
 
   
@@ -51,8 +49,6 @@ router.post('/', async (req,res) =>{
   });
 
   project.projectFile = filepath;
-
-  console.log(project);
 
 /* by id mat7otech { } */
 
@@ -172,7 +168,6 @@ router.get('/:id',auth, async (req,res) => {
 // @desc        delete the project 
 // @access      private
 router.delete('/:id',auth, async (req,res) => {
-  console.log(req.params.id);
   try{
     const response =  await Project.findOneAndDelete({_id : req.params.id});
     res.send(response);

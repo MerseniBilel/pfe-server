@@ -40,7 +40,6 @@ route.post('/',[
     
     try{
         let user = await User.findOne({email});
-        console.log(user)
         if(!user){
             return res.status(400).send({ errors:[ {msg:'Invalid credentials'} ] });
         }
@@ -61,7 +60,8 @@ route.post('/',[
         }
 
         // get all project of the user 
-        const allProjects = await Project.find({team:user.id, started:true}).populate(['projectOwner','team']);
+        
+        const allProjects = await Project.find({team:user.id}).populate(['projectOwner','team']);
         const teamMember  = allProjects[0].team.map(tt => {
             return {
                 name : tt.name,
@@ -91,9 +91,6 @@ route.post('/',[
             profile : user,
             data : homepageData,
         }
-
-        console.log(respomseData)
-        //get all the taks
 
         const payload = {
             user:{

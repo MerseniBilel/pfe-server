@@ -16,19 +16,25 @@ router.get('/',auth, async (req,res) =>{
 
 // post an event
 router.post('/',auth, async (req,res) =>{
+    
 
     const {taskdescription , theuser} = req.body
+    let isEventExist = await Event.findOne({taskdescription});
+    if(!isEventExist){
+        myevent = new Event({
+            taskdescription,
+            theuser
+        })
     
-    myevent = new Event({
-        taskdescription,
-        theuser
-    })
-
-    try {
-        await myevent.save();
-        res.send(myevent);        
-    }catch(error){
-        console.log(error);
+        try {
+            await myevent.save();
+            res.send(myevent);        
+        }catch(error){
+            console.log(error);
+        }
+    }else {
+        console.log('alredy exist' + taskdescription);
+        
     }
 });
 

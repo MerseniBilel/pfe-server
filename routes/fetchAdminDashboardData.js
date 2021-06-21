@@ -26,12 +26,10 @@ route.get('/', auth, async (req,res) =>{
     */ 
 
     try {
-        console.log("we got a request")
         const userNumber = await User.count();
         const projectNumber = await Project.count();
         const pendingProjects = await Project.count({started : false})
         const allProjects = await Project.find().populate('projectOwner',['name','lastname','avatar','email'])
-        console.log(allProjects)
     
         const response = {
             usersNumber : userNumber,
