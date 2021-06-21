@@ -177,4 +177,35 @@ router.delete('/:id',auth, async (req,res) => {
   
 })
 
+// @route UPDATE   api/project/{id}
+// @desc        update the project 
+// @access      private
+router.put('/:id',auth, async (req,res) => {
+  try{
+    const updatestatus = await Project.findOneAndUpdate({_id:req.params.id},{started : true}, {new: true});
+    res.send(updatestatus);
+  }catch(error){
+    console.log(error);
+  }
+  
+})
+// @route UPDATE task   api/project/updatetask/{id}
+// @desc        update the project 
+// @access      private
+router.put('/task/:id',auth, async (req,res) => {
+  try{
+    const updatestatus = await Project.updateOne(
+      {"tasks._id" : req.params.id},
+      {
+        "$set" : {'tasks.$.completed': true}
+      }
+    )
+    
+    res.send(updatestatus);
+  }catch(error){
+    console.log(error);
+  }
+  
+})
+
 module.exports = router;

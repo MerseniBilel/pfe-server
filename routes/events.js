@@ -40,6 +40,7 @@ router.post('/',auth, async (req,res) =>{
 
 //update finished task
 router.post('/update',auth, async (req,res) =>{
+    console.log(req.body)
     try {
         const response = await Event.findOneAndUpdate({ taskdescription : req.body.taskdescription },{ finishdate: req.body.finishdate }, {new : true});
         res.send(response);

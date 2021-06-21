@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const {check, validationResult} = require('express-validator');
+const nodemailer = require('nodemailer');
 const User =  require('../models/User');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
@@ -41,7 +42,7 @@ router.post('/',[
         return res.status(400).send({ errors : errors.array()});
     }
 
-    const {name,lastname,phone_number, role, email, password} = req.body; 
+    const {name,lastname,phone_number, role, email, password, msg } = req.body; 
 
     try{
         //check if user exists
@@ -75,6 +76,30 @@ router.post('/',[
         //hash the password
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password,salt);
+
+        //send mail to user 
+
+        /*var transporter = nodemailer.createTransport({
+            service: 'gmail', // your smtp server : exmp : smtp.csi.com
+            auth: {
+              user: 'mypinalproject@gmail.com', // your smtp email
+              pass: 'bilelmerseni0408' //your smtp password
+            }
+          });
+          var mailOptions = {
+            from: 'mypinalproject@gmail.com', // your smtp email
+            to: email,
+            subject: 'welcome to csi maghreb',
+            text: msg
+          };
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent:');
+            }
+          });*/
+          
 
         //save user into db
         try {

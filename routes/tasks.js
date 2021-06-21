@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Project = require('../models/Project');
 const auth = require('../middleware/auth');
+const { response } = require('express');
 
 
 
@@ -105,6 +106,21 @@ router.put('/',auth, async (req,res) =>{
   }
 
 });
+
+// @route get   api/tasks
+// @desc        get single task by id
+// @access      private
+router.get('/task/:id',auth, async (req,res) =>{
+   
+  try {
+    const response = await Project.find({_id : req.params.id},{tasks : 1});
+    res.send(response)
+  } catch (error) {
+    console.log(error)
+  }
+
+});
+
 
 module.exports = router;
 /*
