@@ -93,9 +93,9 @@ route.post('/',[
 // @desc    auth    authenticate user
 // @access          public
 route.post('/logout' ,async (req,res)=> {
-    const {email} = req.body; 
+    const {userid} = req.body; 
     try{
-        let user = await User.findOne({email});
+        let user = await User.findById(userid)
         try{
             updatestatus = await User.findOneAndUpdate(
                 {email:user.email},

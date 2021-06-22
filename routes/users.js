@@ -79,7 +79,7 @@ router.post('/',[
 
         //send mail to user 
 
-        /*var transporter = nodemailer.createTransport({
+        var transporter = nodemailer.createTransport({
             service: 'gmail', // your smtp server : exmp : smtp.csi.com
             auth: {
               user: 'mypinalproject@gmail.com', // your smtp email
@@ -98,7 +98,7 @@ router.post('/',[
             } else {
               console.log('Email sent:');
             }
-          });*/
+          });
           
 
         //save user into db
