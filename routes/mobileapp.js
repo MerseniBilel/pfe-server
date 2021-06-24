@@ -25,7 +25,7 @@ route.post('/',[
 
     const sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
-      }
+    }
 
     await sleep(2000)
 

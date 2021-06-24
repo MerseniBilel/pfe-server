@@ -146,35 +146,9 @@ route.put('/', async (req,res) => {
         res.send('file was uploaded sucessfulyy');
     }
 
-
-   /* try{
-        updatestatus = await User.findOneAndUpdate(
-            {email:user.email},
-            {active : false},
-            {new : true}
-        );
-    }catch(err){
-        console.log(err)
-    }*/
     
 
 });
 
 
 module.exports = route
-
-/*
-
-var objFriends = { fname:"fname",lname:"lname",surname:"surname" };
-Friend.findOneAndUpdate(
-   { _id: req.body.id }, 
-   { $push: { friends: objFriends  } },
-  function (error, success) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(success);
-        }
-    });
-)
-*/

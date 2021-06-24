@@ -123,19 +123,3 @@ router.get('/task/:id',auth, async (req,res) =>{
 
 
 module.exports = router;
-/*
-  try {
-     const response = await Project.updateOne(
-       {"tasks._id" : req.params.id},
-       {
-         "$set" : {'tasks.$.teamMember': req.body.teamMember}
-       }
-     )
-      res.send(response);
-
-   } catch (error) {
-     console.log(error);
-     res.status(500).send('server error cam,t update the task');
-   }
-
-*/
