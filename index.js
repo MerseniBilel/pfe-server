@@ -23,6 +23,8 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
+//file upload
 app.use(fileupload());
 app.use(express.static("files"));
 
@@ -41,9 +43,6 @@ app.use('/api/fetchadmin', require('./routes/fetchAdminDashboardData'));
 app.use('/api/v2/mobile', require('./routes/mobileapp'));
 app.use('/api/event', require('./routes/events'));
 app.use('/api/productivity', require('./routes/productivity'));
-
-
-
 
 
 //start server

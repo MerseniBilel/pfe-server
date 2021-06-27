@@ -27,7 +27,7 @@ route.post('/',[
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
 
-    await sleep(2000)
+    await sleep(500)
 
     const errors = validationResult(req);
     
@@ -59,38 +59,6 @@ route.post('/',[
             console.log(err)
         }
 
-        // get all project of the user 
-        
-        const allProjects = await Project.find({team:user.id}).populate(['projectOwner','team']);
-        const teamMember  = allProjects[0].team.map(tt => {
-            return {
-                name : tt.name,
-                lastname : tt.lastname,
-                email:tt.email,
-                avatar: tt.avatar
-            }
-        });
-
-        const homepageData = allProjects.map(pp => {
-            return {
-                projectName : pp.projectName,
-                projectDesc : pp.projectDesc,
-                creationDate : pp.creationDate,
-                projectOwner : {
-                    name : pp.projectOwner.name,
-                    lastname : pp.projectOwner.lastname,
-                    avatar: pp.projectOwner.avatar,
-                    email : pp.projectOwner.email,
-                },
-               team : teamMember
-            }
-        });
-
-
-        const respomseData = {
-            profile : user,
-            data : homepageData,
-        }
 
         const payload = {
             user:{
@@ -105,7 +73,7 @@ route.post('/',[
             {expiresIn:"10h"},
             (err, token)=>{
                 if(err) throw err;
-                res.send({token,respomseData});
+                res.send({token,user});
             }
         );
 
@@ -117,5 +85,68 @@ route.post('/',[
 
 
 });
+
+
+
+route.get('/projects/:id',async (req,res)=> {
+    try {
+        const response = await Project.find({"team" : req.params.id},{started : 1 ,projectName : 1 , projectDesc : 1, projectOwner : 1}).populate('projectOwner');
+        //const mytasks = await Project.find({"tasks.teamMember" : req.params.id},{tasks : 1});
+        //const tasknumber = mytasks.tasks.filter(tt => tt.teamMember == req.params.id)
+
+        res.send(response);
+    } catch (error) {
+        res.status(500).send('Server error')
+    }
+
+});
+
+route.get('/tasks/:id',async (req,res)=> {
+    try {
+        const response = await Project.find({"team" : req.params.id},{tasks:1, _id:0})
+        //const mytasks = await Project.find({"tasks.teamMember" : req.params.id},{tasks : 1});
+        //const tasknumber = mytasks.tasks.filter(tt => tt.teamMember == req.params.id)
+        var mytasks = [];
+
+        response.map(tt => {
+        tt.tasks.map(tsk => {
+              if(tsk.teamMember == req.params.id){
+                  mytasks.push(tsk);
+              }
+          });
+        });
+        res.send(mytasks);
+    } catch (error) {
+        res.status(500).send('Server error')
+    }
+
+});
+
+
+route.get('/profile/:id',async (req,res)=> {
+    try {
+        const response = await User.find({_id : req.params.id});
+        res.send(response[0]);
+    } catch (error) {
+        res.status(500).send('Server error')
+    }
+
+});
+
+route.get('/desc',async (req,res)=> {
+    try {
+        const projectid = '60d22cbb36b4661e0ce77d48'
+        const userid = '60d226b6d78552406c74b657'
+        
+        const response = await Project.find({_id : projectid},{tasks:1});
+        const mytasks = response[0].tasks.filter(tsk => tsk.teamMember = userid);
+        res.send(mytasks)
+    } catch (error) {
+        res.status(500).send('Server error')
+    }
+
+});
+
+
 
 module.exports = route
